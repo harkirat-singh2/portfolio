@@ -74,22 +74,22 @@ function App() {
 
   const projects = [
     {
-      title: "Cyvoria Cybersecurity Landing Page",
+      title: "E-commerce Platform",
       description:
-        "Professional landing page for cybersecurity company featuring modern design, responsive layout, and optimized user experience.",
+        "Modern e-commerce platform with shopping cart, product catalog, user authentication, and secure payment integration.",
       technologies: ["HTML", "CSS", "JavaScript", "React"],
-      link: "#",
+      link: "https://harkirat-singh2.github.io/ecommerce-project/",
       image:
-        "https://images.pexels.com/photos/60504/security-protection-anti-virus-software-60504.jpeg?auto=compress&cs=tinysrgb&w=600",
+        "https://images.pexels.com/photos/230544/pexels-photo-230544.jpeg?auto=compress&cs=tinysrgb&w=600",
     },
     {
-      title: "Full Stack Web Application",
+      title: "Cybersecurity Project",
       description:
-        "Complete web application built with MERN stack featuring user authentication, database integration, and modern UI.",
-      technologies: ["React", "Node.js", "Express", "MongoDB"],
-      link: "#",
+        "Professional cybersecurity landing page featuring modern design, security services showcase, and responsive layout.",
+      technologies: ["HTML", "CSS", "JavaScript", "React"],
+      link: "https://harkirat-singh2.github.io/Cybersecurity-project/",
       image:
-        "https://images.pexels.com/photos/11035380/pexels-photo-11035380.jpeg?auto=compress&cs=tinysrgb&w=600",
+        "https://images.pexels.com/photos/60504/security-protection-anti-virus-software-60504.jpeg?auto=compress&cs=tinysrgb&w=600",
     },
   ];
 
@@ -274,7 +274,7 @@ function App() {
             <div className="relative">
               <div className="w-80 h-80 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full mx-auto relative overflow-hidden shadow-glow float">
                 <img
-                  src={`${import.meta.env.VITE_BASE_URL}harkirat-portrait.jpg`}
+                  src="./harkirat-portrait.jpg"
                   alt="Harkirat Singh - Full Stack Developer"
                   className="w-full h-full object-cover object-top"
                 />
