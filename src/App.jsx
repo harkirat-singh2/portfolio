@@ -17,89 +17,252 @@ import {
   FolderOpen,
 } from "lucide-react";
 
+import { Download } from "lucide-react";
+
 function App() {
   const [activeSection, setActiveSection] = useState("hero");
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const sections = [
-        "hero",
-        "about",
-        "skills",
-        "experience",
-        "projects",
-        "contact",
-      ];
-      const scrollPosition = window.scrollY + 100;
+  const handleScroll = () => {
+    // Calculate and update scroll progress percentage
+    const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = totalHeight > 0 ? (window.scrollY / totalHeight) * 100 : 0;
+    setScrollProgress(progress);
 
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const offsetTop = element.offsetTop;
-          const offsetBottom = offsetTop + element.offsetHeight;
+    // Existing code: Determine the currently active section
+    const sections = [
+      "hero",
+      "about",
+      "skills",
+      "experience",
+      "projects",
+      "contact",
+    ];
+    const scrollPosition = window.scrollY + 100;
 
-          if (scrollPosition >= offsetTop && scrollPosition < offsetBottom) {
-            setActiveSection(section);
-            break;
-          }
+    for (const section of sections) {
+      const element = document.getElementById(section);
+      if (element) {
+        const offsetTop = element.offsetTop;
+        const offsetBottom = offsetTop + element.offsetHeight;
+
+        if (scrollPosition >= offsetTop && scrollPosition < offsetBottom) {
+          setActiveSection(section);
+          break;
         }
       }
-    };
+    }
+  };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  // Attach scroll event listener
+  window.addEventListener("scroll", handleScroll);
+
+  // Cleanup event listener on component unmount
+  return () => window.removeEventListener("scroll", handleScroll);
+}, []);
+
 
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
+window.scrollTo({
+  top: element.offsetTop - 70,
+  behavior: "smooth",
+});    }
   };
 
-  const skills = [
-    { name: "HTML", level: 90, icon: Code },
-    { name: "CSS", level: 85, icon: Code },
-    { name: "JavaScript", level: 88, icon: Code },
-    { name: "React", level: 85, icon: Code },
-    { name: "Node.js", level: 80, icon: Server },
-    { name: "Express", level: 78, icon: Server },
-    { name: "MongoDB", level: 75, icon: Database },
-    { name: "AI/ML", level: 90, icon: Globe },
-    { name: "Python", level: 80, icon: Globe },
-    { name: "Java", level: 75, icon: Globe },
-    { name: "C++", level: 70, icon: Globe },
-    { name: "Generative AI", level: 65, icon: Globe },
-  ];
+  const skillCategories = [
+  {
+    icon: "🚀",
+    title: "Backend",
+    skills: [
+      "FastAPI",
+      "Flask",
+      "REST APIs",
+      "JWT",
+      "SQLAlchemy",
+      "Pydantic",
+    ],
+  },
+  {
+    icon: "🤖",
+    title: "AI / Generative AI",
+    skills: [
+      "LangChain",
+      "RAG",
+      "LlamaIndex",
+      "OpenAI",
+      "Gemini",
+      "Hugging Face",
+      "Groq",
+      "Ollama",
+    ],
+  },
+  {
+    icon: "🗄",
+    title: "Databases",
+    skills: [
+      "MySQL",
+      "SQLite",
+      "MariaDB",
+      "ChromaDB",
+      "FAISS",
+      "Pinecone",
+    ],
+  },
+  {
+    icon: "⚙",
+    title: "DevOps & Tools",
+    skills: [
+      "Docker",
+      "Git",
+      "GitHub",
+      "Postman",
+      "VS Code",
+      "Uvicorn",
+    ],
+  },
+  {
+    icon: "💻",
+    title: "Languages",
+    skills: [
+      "Python",
+      "Java",
+      "JavaScript",
+      "SQL",
+    ],
+  },
+];
 
-  const projects = [
-    {
-      title: "E-commerce Platform",
-      description:
-        "Modern e-commerce platform with shopping cart, product catalog, user authentication, and secure payment integration.",
-      technologies: ["HTML", "CSS", "JavaScript", "React"],
-      link: "https://harkirat-singh2.github.io/ecommerce-project/",
-      image:
-        "https://images.pexels.com/photos/230544/pexels-photo-230544.jpeg?auto=compress&cs=tinysrgb&w=600",
-    },
-    {
-      title: "Cybersecurity Project",
-      description:
-        "Professional cybersecurity landing page featuring modern design, security services showcase, and responsive layout.",
-      technologies: ["HTML", "CSS", "JavaScript", "React"],
-      link: "https://harkirat-singh2.github.io/Cybersecurity-project/",
-      image:
-        "https://images.pexels.com/photos/60504/security-protection-anti-virus-software-60504.jpeg?auto=compress&cs=tinysrgb&w=600",
-    },
-  ];
+const projects = [
+  {
+    title: "SEO Audit Platform",
+    category: "Backend + Generative AI",
+    github: "https://github.com/harkirat-singh2/SEO-audit-platform",
+
+    description:
+      "AI-powered SEO auditing platform that crawls websites, performs technical and on-page SEO analysis, generates AI recommendations, and exports PDF & Excel reports.",
+
+    highlights: [
+      "AI Recommendation Engine",
+      "Technical SEO Analysis",
+      "Async Website Crawler",
+      "PDF & Excel Reports",
+    ],
+
+    technologies: [
+      "FastAPI",
+      "Python",
+      "AsyncIO",
+      "BeautifulSoup",
+      "Gemini",
+      "SQLAlchemy",
+      "SQLite",
+    ],
+
+image: `${import.meta.env.BASE_URL}images/seo-audit.png`,  },
+
+  {
+    title: "MedIntel AI CRM",
+
+    category: "Healthcare AI",
+
+    github: "https://github.com/harkirat-singh2/medintel-ai-crm",
+
+    description:
+      "AI-powered healthcare CRM integrating LLM capabilities to streamline workflows, automate responses, and improve productivity.",
+
+    highlights: [
+      "LLM Integration",
+      "Healthcare CRM",
+      "Prompt Engineering",
+      "FastAPI Backend",
+    ],
+
+    technologies: [
+      "Python",
+      "FastAPI",
+      "OpenAI",
+      "MySQL",
+      "Docker",
+    ],
+
+image: `${import.meta.env.BASE_URL}images/medintel.png`,  },
+
+  {
+    title: "Multi-Agent Research",
+
+    category: "AI Systems",
+
+    github: "https://github.com/harkirat-singh2/multi-agent-research",
+
+    description:
+      "Multi-agent orchestration platform using LangChain that routes user requests to specialized AI agents for intelligent task execution.",
+
+    highlights: [
+      "Planner Agent",
+      "Memory",
+      "Tool Routing",
+      "RAG",
+    ],
+
+    technologies: [
+      "LangChain",
+      "FastAPI",
+      "Python",
+      "OpenAI",
+      "Docker",
+    ],
+
+image: `${import.meta.env.BASE_URL}images/multi-agent.png`,  },
+
+  {
+    title: "RAG Document Assistant",
+
+    category: "Generative AI",
+
+    github: "https://github.com/harkirat-singh2/rag-system",
+
+    description:
+      "Retrieval-Augmented Generation application enabling users to upload PDFs and ask contextual questions using vector search and LLMs.",
+
+    highlights: [
+      "PDF Chat",
+      "Vector Search",
+      "ChromaDB",
+      "Semantic Search",
+    ],
+
+    technologies: [
+      "FastAPI",
+      "LangChain",
+      "ChromaDB",
+      "Python",
+      "HuggingFace",
+    ],
+
+image: `${import.meta.env.BASE_URL}images/rag-system.png`,  },
+];
 
   return (
     <div className="bg-black text-white min-h-screen bg-gradient-mesh">
+      <div className="fixed top-0 left-0 w-full h-1 bg-transparent z-[9999]">
+
+  <div
+
+    className="h-full bg-gradient-to-r from-blue-500 to-purple-600 transition-all duration-150"
+
+    style={{ width: `${scrollProgress}%` }}
+
+  />
+
+</div>
       {/* Navigation */}
       <motion.nav
         initial={{ y: -60, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.7, ease: "easeOut" }}
+        transition={{ duration: 0.35, ease: "easeOut" }}
         className="fixed top-0 left-0 right-0 z-50 glass border-b border-gray-800/50"
       >
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -108,7 +271,14 @@ function App() {
               Harkirat Singh
             </div>
             <div className="hidden md:flex space-x-8">
-              {["about", "skills", "experience", "projects", "contact"].map(
+              {[
+  "about",
+  "skills",
+  "experience",
+  "projects",
+  "certifications",
+  "contact",
+].map(
                 (section) => (
                   <button
                     key={section}
@@ -133,37 +303,78 @@ function App() {
         id="hero"
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, ease: "easeOut" }}
-        className="min-h-screen flex items-center justify-center relative bg-gradient-radial"
+transition={{
+  duration: 0.55,
+  ease: "easeOut",
+}}        className="min-h-screen pt-20 flex items-center justify-center relative bg-gradient-radial"
       >
         <div className="absolute inset-0 bg-gradient-to-br from-blue-900/10 via-purple-900/10 to-black"></div>
         <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8">
           <div className="animate-fade-in">
+            
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-6">
               <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent text-glow">
                 Harkirat Singh
               </span>
             </h1>
             <p className="text-xl sm:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto">
-              Full Stack Developer & Third Year Student
-            </p>
-            <p className="text-lg text-gray-400 mb-12 max-w-2xl mx-auto">
-              Passionate about creating modern web applications with
-              cutting-edge technologies
-            </p>
+  Backend Engineer • Python Developer • GenAI Enthusiast
+</p>
+            <p className="text-lg text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed">
+  I design and build scalable backend systems, AI-powered applications,
+and production-ready APIs using Python, FastAPI, LangChain,
+Retrieval-Augmented Generation (RAG), Docker, and modern LLMs.
+</p><div className="flex flex-wrap justify-center gap-3 mb-12">
+  {[
+    "Python",
+  "FastAPI",
+  "AsyncIO",
+  "BeautifulSoup",
+  "Gemini",
+  "REST APIs",
+  "JWT",
+  "SQLAlchemy",
+  "MySQL",
+  "Docker",
+  "Git",
+  ].map((tech) => (
+    <span
+      key={tech}
+      className="px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-300 text-sm"
+    >
+      {tech}
+    </span>
+  ))}
+</div>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              
               <button
                 onClick={() => scrollToSection("projects")}
-                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-8 py-3 rounded-lg font-semibold transition-all transform hover:scale-105 shadow-glow hover:shadow-glow-purple"
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-8 py-3 rounded-lg font-semibold transition-all transform hover:scale-105 duration-200 shadow-glow hover:shadow-glow-purple"
               >
-                View My Work
+View Projects
               </button>
-              <button
-                onClick={() => scrollToSection("contact")}
-                className="border border-gray-600 hover:border-blue-400 px-8 py-3 rounded-lg font-semibold transition-colors hover:text-blue-400 glass hover:shadow-glow"
-              >
-                Get In Touch
-              </button>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+
+
+
+  <a
+    href={`${import.meta.env.BASE_URL}resume.pdf`}
+    download="Harkirat_Backend_Resume.pdf"
+    className="border border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-white px-8 py-3 rounded-lg font-semibold transition-all text-center"
+  >
+    💻 Backend Resume
+  </a>
+
+  <a
+    href={`${import.meta.env.BASE_URL}genai_resume.pdf`}
+    download="Harkirat_GenAI_Resume.pdf"
+    className="border border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white px-8 py-3 rounded-lg font-semibold transition-all text-center"
+  >
+    🤖 GenAI Resume
+  </a>
+
+</div>
             </div>
             <div className="flex justify-center space-x-6 mt-8">
               <a
@@ -175,7 +386,7 @@ function App() {
                 <Github className="h-7 w-7" />
               </a>
               <a
-                href="https://www.linkedin.com/in/harkirat-singh-83862a27a"
+                href="https://www.linkedin.com/in/harkiratsingh11/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-400 hover:text-blue-400 transition-colors hover:scale-110 transform duration-200"
@@ -215,20 +426,24 @@ function App() {
           </div>
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h3 className="text-2xl font-semibold mb-6 text-blue-400 text-glow">
-                Hello! I'm Harkirat Singh
-              </h3>
-              <p className="text-gray-300 leading-relaxed mb-6">
-                I'm a passionate third-year student specializing in full-stack
-                web development. I love creating digital experiences that
-                combine beautiful design with robust functionality.
-              </p>
-              <p className="text-gray-300 leading-relaxed mb-6">
-                My journey in web development started with curiosity about how
-                websites work, and it has evolved into a deep passion for
-                creating modern, scalable applications using the latest
-                technologies.
-              </p>
+             <h3 className="text-2xl font-semibold mb-6 text-blue-400 text-glow">
+  Hello! I'm Harkirat Singh
+</h3>
+
+<p className="text-gray-300 leading-relaxed mb-6">
+  I'm a Computer Engineering student with a strong interest in Backend
+  Development, Generative AI, and scalable software engineering. I enjoy
+  building secure REST APIs, designing efficient backend systems, and
+  developing AI-powered applications that solve real-world problems.
+</p>
+
+<p className="text-gray-300 leading-relaxed mb-6">
+  During my internship as a Backend Developer, I worked on FastAPI,
+  SQLAlchemy, JWT Authentication, database integration, and AI-based
+  applications using LangChain and Retrieval-Augmented Generation (RAG).
+  I'm continuously improving my skills in Data Structures & Algorithms,
+  Docker, cloud technologies, and modern backend architecture.
+</p>
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-2 text-gray-300">
                   <MapPin className="h-4 w-4 text-blue-400" />
@@ -243,7 +458,7 @@ function App() {
                 </div>
                 <div className="flex items-center gap-2 text-gray-300">
                   <Code className="h-4 w-4 text-blue-400" />
-                  <span>Third Year Student</span>
+<span>Backend Engineer • GenAI Enthusiast</span>
                 </div>
               </div>
               <div className="flex space-x-4 mt-6">
@@ -256,7 +471,7 @@ function App() {
                   <Github className="h-6 w-6" />
                 </a>
                 <a
-                  href="https://www.linkedin.com/in/harkirat-singh-83862a27a"
+                  href="https://www.linkedin.com/in/harkiratsingh11/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-gray-400 hover:text-blue-400 transition-colors hover:scale-110 transform duration-200"
@@ -274,7 +489,7 @@ function App() {
             <div className="relative">
               <div className="w-80 h-80 bg-gradient-to-br from-blue-600 to-purple-600 rounded-full mx-auto relative overflow-hidden shadow-glow float">
                 <img
-                  src="./harkirat-portrait.jpg"
+                  src="./profile.jpg"
                   alt="Harkirat Singh - Full Stack Developer"
                   className="w-full h-full object-cover object-top"
                 />
@@ -301,48 +516,55 @@ function App() {
             </h2>
             <div className="w-24 h-1 bg-gradient-to-r from-blue-400 to-purple-600 mx-auto shadow-glow"></div>
           </div>
-          <motion.div
-            className="grid md:grid-cols-2 gap-8"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            variants={{
-              hidden: {},
-              visible: {
-                transition: {
-                  staggerChildren: 0.15,
-                },
-              },
-            }}
+<div className="max-w-5xl mx-auto space-y-8">
+  {skillCategories.map((category) => (
+    <div
+      key={category.title}
+      className="
+        glass
+        rounded-2xl
+        border
+        border-gray-700
+        p-8
+        hover:border-blue-500
+        hover:shadow-[0_0_25px_rgba(59,130,246,0.25)]
+        transition-all
+        duration-300
+      "
+    >
+      <h3 className="text-2xl font-semibold text-blue-400 mb-6">
+        <span className="mr-3">{category.icon}</span>
+        {category.title}
+      </h3>
+
+      <div className="flex flex-wrap gap-4">
+        {category.skills.map((skill) => (
+          <span
+            key={skill}
+            className="
+              px-5
+              py-2
+              rounded-full
+              bg-blue-500/10
+              border
+              border-blue-500/30
+              text-gray-200
+              hover:bg-blue-500
+              hover:text-white
+              hover:scale-105
+              duration-200
+              transition-all
+              duration-300
+              cursor-default
+            "
           >
-            {skills.map((skill, index) => (
-              <motion.div
-                key={skill.name}
-                variants={{
-                  hidden: { opacity: 0, y: 30 },
-                  visible: { opacity: 1, y: 0 },
-                }}
-                transition={{ duration: 0.7, ease: "easeOut" }}
-                className="group"
-              >
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-3">
-                    <skill.icon className="h-5 w-5 text-blue-400" />
-                    <span className="font-semibold">{skill.name}</span>
-                  </div>
-                  <span className="text-blue-400 font-semibold">
-                    {skill.level}%
-                  </span>
-                </div>
-                <div className="w-full bg-gray-700 rounded-full h-2">
-                  <div
-                    className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full transition-all duration-1000 ease-out"
-                    style={{ width: `${skill.level}%` }}
-                  ></div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
+            {skill}
+          </span>
+        ))}
+      </div>
+    </div>
+  ))}
+</div>
         </div>
       </motion.section>
 
@@ -368,30 +590,69 @@ function App() {
             <div className="relative z-10">
               <div className="flex items-center justify-center mb-8">
                 <div className="glass border-4 border-blue-400 rounded-full p-6 shadow-glow pulse-glow">
-                  <Globe className="h-8 w-8 text-blue-400" />
+                  <Server className="h-8 w-8 text-blue-400" />
                 </div>
               </div>
-              <div className="glass rounded-lg p-8 shadow-xl max-w-2xl mx-auto border-gradient">
-                <h3 className="text-2xl font-bold mb-2 text-blue-400">
-                  Freelance Web Developer
-                </h3>
-                <h4 className="text-xl font-semibold mb-4 text-purple-400">
-                  Cyvoria Cybersecurity
-                </h4>
-                <p className="text-gray-300 leading-relaxed mb-6">
-                  Developed and delivered a professional landing page for a
-                  cybersecurity company. Collaborated directly with the client
-                  to understand their vision and implemented a modern,
-                  responsive design that effectively communicates their services
-                  and expertise.
-                </p>
+              <div className="
+glass
+rounded-2xl
+p-10
+shadow-xl
+max-w-4xl
+mx-auto
+border
+border-gray-700
+hover:border-blue-500
+transition-all
+duration-500
+hover:shadow-[0_0_30px_rgba(59,130,246,0.25)]
+">
+<h3 className="text-2xl font-bold mb-2 text-blue-400">
+   Backend Developer Intern
+</h3>
+
+<h4 className="text-xl font-semibold mb-2 text-purple-400">
+  HCL Technologies
+</h4>
+
+<div className="flex flex-wrap items-center gap-4 text-sm text-gray-400 mb-6">
+  <span>📅 June 2026 – Present</span>
+  <span>📍 Pune, India</span>
+</div>
+<div className="space-y-4 text-gray-300 leading-relaxed mb-8">
+
+  <p>
+    • Contributing to the development of an <span className="text-blue-400 font-medium">AI-powered SEO Audit Platform</span> capable of performing technical and on-page SEO analysis at scale.
+  </p>
+
+  <p>
+    • Engineered scalable backend services using <span className="text-blue-400 font-medium">Python</span> and <span className="text-blue-400 font-medium">FastAPI</span>, following modular architecture and clean coding practices.
+  </p>
+
+  <p>
+    • Developed asynchronous website crawling and content extraction modules using <span className="text-blue-400 font-medium">AsyncIO</span> and <span className="text-blue-400 font-medium">BeautifulSoup</span>.
+  </p>
+
+  <p>
+    • Integrated <span className="text-blue-400 font-medium">Gemini AI</span> to generate SEO scores, optimization suggestions, and automated content recommendations.
+  </p>
+
+  <p>
+    • Designed secure REST APIs, implemented JWT Authentication, and automated PDF & Excel report generation for enterprise SEO audits.
+  </p>
+
+</div>
                 <div className="flex flex-wrap gap-2">
                   {[
-                    "HTML",
-                    "CSS",
-                    "JavaScript",
-                    "React",
-                    "Responsive Design",
+                    "Python",
+  "FastAPI",
+  "SQLAlchemy",
+  "JWT",
+  "REST APIs",
+  "LangChain",
+  "MySQL",
+  "SQLite",
+  "Git",
                   ].map((tech) => (
                     <span
                       key={tech}
@@ -425,7 +686,7 @@ function App() {
             <div className="w-24 h-1 bg-gradient-to-r from-blue-400 to-purple-600 mx-auto shadow-glow"></div>
           </div>
           <motion.div
-            className="grid md:grid-cols-2 gap-8 justify-center"
+            className="grid lg:grid-cols-2 gap-10"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
@@ -433,7 +694,7 @@ function App() {
               hidden: {},
               visible: {
                 transition: {
-                  staggerChildren: 0.18,
+                  staggerChildren: 0.08,
                 },
               },
             }}
@@ -445,39 +706,97 @@ function App() {
                   hidden: { opacity: 0, scale: 0.95, y: 30 },
                   visible: { opacity: 1, scale: 1, y: 0 },
                 }}
-                transition={{ duration: 0.7, ease: "easeOut" }}
-                className="glass rounded-lg overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 group hover:-translate-y-2 hover:shadow-glow"
+transition={{
+  duration: 0.35,
+}}                className="
+glass
+rounded-2xl
+overflow-hidden
+border
+border-gray-700
+hover:border-blue-500
+transition-all
+duration-300
+hover:-translate-y-2
+hover:shadow-[0_0_30px_rgba(59,130,246,0.25)]
+"
               >
                 <div className="relative overflow-hidden">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent"></div>
+<div className="relative overflow-hidden">
+
+  <img
+    src={project.image}
+    alt={project.title}
+    className="
+      w-full
+      h-56
+      object-cover
+      transition-transform
+      duration-500
+      hover:scale-110
+    "
+  />
+
+  {/* Category Badge */}
+  <div className="absolute top-4 left-4">
+    <span className="px-3 py-1 rounded-full bg-black/70 backdrop-blur-md text-white text-xs font-semibold">
+      {project.category}
+    </span>
+  </div>
+
+  {/* Gradient Overlay */}
+  <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-transparent to-transparent"></div>
+
+</div>
                 </div>
-                <div className="p-6">
+                <div className="p-8 flex flex-col h-full">
+                  
                   <h3 className="text-xl font-bold mb-3 text-blue-400">
                     {project.title}
                   </h3>
                   <p className="text-gray-300 mb-4 leading-relaxed">
                     {project.description}
                   </p>
+                  <div className="mb-5 space-y-2">
+  {project.highlights.map((item) => (
+    <div
+      key={item}
+      className="flex items-center gap-2 text-sm text-gray-300"
+    >
+      <span className="text-green-400">✔</span>
+
+      <span>{item}</span>
+    </div>
+  ))}
+</div>
                   <div className="flex flex-wrap gap-2 mb-4">
                     {project.technologies.map((tech) => (
                       <span
                         key={tech}
-                        className="px-2 py-1 bg-purple-600/30 text-purple-300 rounded text-sm"
+                        className="
+px-3
+py-1.5
+rounded-full
+bg-blue-500/10
+border
+border-blue-500/30
+text-blue-300
+text-xs
+hover:bg-blue-500
+hover:text-white
+transition-all
+duration-300
+"
                       >
                         {tech}
                       </span>
                     ))}
                   </div>
                   <a
-                    href={project.link}
+                    href={project.github}
                     className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors"
                   >
-                    <span>View Project</span>
+                    <span>GitHub Repository</span>
                     <ExternalLink className="h-4 w-4" />
                   </a>
                 </div>
@@ -486,6 +805,77 @@ function App() {
           </motion.div>
         </div>
       </motion.section>
+      
+      <motion.section
+  id="certifications"
+  initial={{ opacity: 0, y: 60 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true, amount: 0.3 }}
+  transition={{ duration: 0.8 }}
+  className="py-20 px-4 sm:px-6 lg:px-8"
+>
+  <div className="max-w-6xl mx-auto">
+
+    <div className="text-center mb-16">
+      <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+        AWS Certifications
+      </h2>
+
+      <div className="w-24 h-1 bg-gradient-to-r from-blue-400 to-purple-600 mx-auto"></div>
+    </div>
+
+    <div className="grid md:grid-cols-3 gap-8">
+
+      {[
+        {
+          title: "Foundations of Prompt Engineering",
+          issuer: "AWS Training & Certification",
+          date: "July 2026",
+        },
+
+        {
+          title: "Fundamentals of Machine Learning & AI",
+          issuer: "AWS Training & Certification",
+          date: "July 2026",
+        },
+
+        {
+          title: "Amazon Connect Routing Fundamentals",
+          issuer: "AWS Training & Certification",
+          date: "July 2026",
+        },
+
+      ].map((cert) => (
+
+        <div
+          key={cert.title}
+          className="glass rounded-2xl border border-gray-700 p-8 hover:border-blue-500 transition-all duration-300 hover:shadow-[0_0_30px_rgba(59,130,246,0.25)]"
+        >
+
+          <div className="text-5xl mb-5">
+            🏆
+          </div>
+
+          <h3 className="text-xl font-bold text-blue-400 mb-4">
+            {cert.title}
+          </h3>
+
+          <p className="text-gray-300 mb-2">
+            {cert.issuer}
+          </p>
+
+          <p className="text-sm text-gray-500">
+            Completed {cert.date}
+          </p>
+
+        </div>
+
+      ))}
+
+    </div>
+
+  </div>
+</motion.section>
 
       {/* Contact Section */}
       <motion.section
@@ -493,7 +883,7 @@ function App() {
         initial={{ opacity: 0, y: 60 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
+        transition={{ duration: 0.45, ease: "easeOut" }}
         className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-radial"
       >
         <div className="max-w-6xl mx-auto">
@@ -567,85 +957,217 @@ function App() {
                 </div>
               </div>
             </div>
-            <div className="glass rounded-lg p-8 border-gradient">
-              <form className="space-y-6">
-                <div>
-                  <label className="block text-sm font-medium mb-2">Name</label>
-                  <input
-                    type="text"
-                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-blue-400 transition-colors"
-                    placeholder="Your Name"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-blue-400 transition-colors"
-                    placeholder="your.email@example.com"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2">
-                    Message
-                  </label>
-                  <textarea
-                    rows={4}
-                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-blue-400 transition-colors resize-none"
-                    placeholder="Your message here..."
-                  ></textarea>
-                </div>
-                <button
-                  type="submit"
-                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 py-3 rounded-lg font-semibold transition-all transform hover:scale-105 shadow-glow hover:shadow-glow-purple"
-                >
-                  Send Message
-                </button>
-              </form>
-            </div>
+<div className="glass rounded-2xl border border-gray-700 p-8 hover:border-blue-500 transition-all duration-300">
+
+  <h3 className="text-2xl font-bold text-blue-400 mb-8">
+    Open to Opportunities
+  </h3>
+
+  <div className="space-y-6">
+
+    <div>
+      <p className="text-gray-400 text-sm">
+        CURRENT STATUS
+      </p>
+
+      <p className="text-green-400 font-semibold">
+        🟢 Backend Engineer Intern @ HCL Technologies
+      </p>
+    </div>
+
+    <div>
+      <p className="text-gray-400 text-sm">
+        LOOKING FOR
+      </p>
+
+      <p className="text-white">
+        Backend Engineer
+      </p>
+
+      <p className="text-white">
+        Generative AI Engineer
+      </p>
+    </div>
+
+    <div>
+      <p className="text-gray-400 text-sm">
+        LOCATION
+      </p>
+
+      <p>Pune, Maharashtra, India</p>
+    </div>
+
+    <div>
+      <p className="text-gray-400 text-sm">
+        EMAIL
+      </p>
+
+      <p>
+        harkirat.email@gmail.com
+      </p>
+    </div>
+
+    <div>
+      <p className="text-gray-400 text-sm">
+        AVAILABILITY
+      </p>
+
+      <p className="text-green-400">
+        Available for Full-Time Opportunities
+      </p>
+<div className="mt-10">
+
+  <h4 className="text-lg font-semibold text-blue-400 mb-5">
+    Resume Downloads
+  </h4>
+
+  <div className="space-y-4">
+
+    <a
+      href={`${import.meta.env.BASE_URL}resume.pdf`}
+      download="Harkirat_Backend_Resume.pdf"
+      className="
+        flex
+        items-center
+        justify-between
+        px-5
+        py-4
+        rounded-xl
+        border
+        border-blue-500/30
+        hover:border-blue-500
+        hover:bg-blue-500/10
+        transition-all
+        duration-300
+      "
+    >
+      <div>
+        <p className="font-semibold text-white">
+          💻 Backend Engineer Resume
+        </p>
+
+        <p className="text-sm text-gray-400">
+          Python • FastAPI • REST APIs • System Design
+        </p>
+      </div>
+
+     <Download className="w-5 h-5 text-blue-400" />
+
+    </a>
+
+    <a
+      href={`${import.meta.env.BASE_URL}genai_resume.pdf`}
+      download="Harkirat_Generative_AI_Resume.pdf"
+      className="
+        flex
+        items-center
+        justify-between
+        px-5
+        py-4
+        rounded-xl
+        border
+        border-purple-500/30
+        hover:border-purple-500
+        hover:bg-purple-500/10
+        transition-all
+        duration-300
+      "
+    >
+      <div>
+        <p className="font-semibold text-white">
+          🤖 Generative AI Resume
+        </p>
+
+        <p className="text-sm text-gray-400">
+          LangChain • RAG • Multi-Agent • LLMs
+        </p>
+      </div>
+
+      <Download className="w-5 h-5 text-blue-400" />
+
+    </a>
+
+  </div>
+
+</div>
+<div className="mt-10">
+
+<h4 className="text-lg font-semibold text-blue-400 mb-4">
+
+Currently Building
+
+</h4>
+
+<div className="space-y-2">
+
+<p>🚀 AI-powered SEO Audit Platform</p>
+
+<p>🤖 Multi-Agent AI Systems</p>
+
+<p>📄 Retrieval-Augmented Generation (RAG)</p>
+
+</div>
+
+</div>
+    </div>
+
+  </div>
+
+</div>
           </div>
         </div>
       </motion.section>
 
-      {/* Footer */}
-      <motion.footer
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
-        className="glass border-t border-gray-700/50 py-8"
-      >
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-center items-center">
-            <div className="text-center md:text-left mb-4 md:mb-0"></div>
-            <div className="flex space-x-6">
-              <a
-                href="https://github.com/harkirat-singh2"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-400 hover:text-blue-400 transition-colors hover:scale-110 transform duration-200"
-              >
-                <Github className="h-5 w-5" />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/harkirat-singh-83862a27a"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-400 hover:text-blue-400 transition-colors hover:scale-110 transform duration-200"
-              >
-                <Linkedin className="h-5 w-5" />
-              </a>
-              <a
-                href="mailto:harkirat.email@gmail.com"
-                className="text-gray-400 hover:text-blue-400 transition-colors hover:scale-110 transform duration-200"
-              >
-                <Mail className="h-5 w-5" />
-              </a>
-            </div>
-          </div>
-        </div>
-      </motion.footer>
+   {/* Footer */}
+<motion.footer
+  initial={{ opacity: 0, y: 40 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
+  className="glass border-t border-gray-700/50 py-8"
+>
+  <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+      
+      {/* Professional Signature */}
+      <div className="text-center md:text-left">
+        <p className="text-sm text-gray-400">
+          Designed & Built by <span className="text-blue-400 font-medium">Harkirat Singh</span>
+        </p>
+        <p className="text-xs text-gray-500 mt-1">
+          Backend Engineer • FastAPI • Python • Generative AI
+        </p>
+      </div>
+
+      {/* Social Links */}
+      <div className="flex space-x-6">
+        <a
+          href="https://github.com/harkirat-singh2"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-gray-400 hover:text-blue-400 transition-colors hover:scale-110 transform duration-200"
+        >
+          <Github className="h-5 w-5" />
+        </a>
+        <a
+          href="https://www.linkedin.com/in/harkiratsingh11/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-gray-400 hover:text-blue-400 transition-colors hover:scale-110 transform duration-200"
+        >
+          <Linkedin className="h-5 w-5" />
+        </a>
+        <a
+          href="mailto:harkirat.email@gmail.com"
+          className="text-gray-400 hover:text-blue-400 transition-colors hover:scale-110 transform duration-200"
+        >
+          <Mail className="h-5 w-5" />
+        </a>
+      </div>
+
+    </div>
+  </div>
+</motion.footer>
+
     </div>
   );
 }
